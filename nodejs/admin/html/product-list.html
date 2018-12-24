@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>开始使用layui</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <style type="text/css">
+      .search{width: 300px;margin: 0 auto;}
+      table{text-align: center;}
+      thead tr th:nth-child(3),th:nth-child(4),th:nth-child(5),th:nth-child(6),th:nth-child(11){text-align: center;}
+      #fenYe{width: 500px; margin: 0 auto;}
+      .ye{
+        height: 26px;
+        padding: 0 10px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .ye:hover{background-color: #009688;color:#fff;}
+      .oldPrice,.newPrice,.stock{cursor: pointer;}
+      #jump{width: 36px;height: 22px;text-align: center;}
+      .now,.sum{font-weight: bolder;}
+    </style>
+  </head>
+  <body layadmin-themealias="default">
+    <div class="layui-card layadmin-header" style="display: block;">
+      <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+        <a lay-href="">首页</a>
+        <span lay-separator="">/</span><a>商品管理</a>
+        <span lay-separator="">/</span><a><cite>商品列表</cite></a>
+      </div>
+    </div>
+    <div class="layui-fluid">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+          <div class="layui-card">
+            <!-- <div class="layui-card-header">订单统计</div> -->
+            <div class="layui-card-body">
+              <!-- <div class="layui-form layui-border-box layui-table-view" lay-filter="LAY-table-22" lay-id="test-table-page" style=" "> -->
+               <div class="layui-table-box">
+                <div class="search">
+                  <div class="layui-inline">
+                    <input class="layui-input" name="id" id="test-table-demoReload" autocomplete="off" placeholder="商品名称">
+                  </div>
+                  <button class="layui-btn" onclick="search()">搜索</button>
+                </div>
+              <button class="layui-btn layui-btn-sm" onclick="addGoods()"><i class="layui-icon"></i>添加</button>
+              <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="delMore()"><i class="layui-icon"></i>批量删除</button>
+              <table class="layui-table">
+                <colgroup>
+                  <col width="40">
+                  <col width="40">
+                  <col width="160">
+                  <col width="80">
+                  <col width="80">
+                  <col>
+                  <col width="120">
+                  <col width="120">
+                  <col width="80">
+                  <col width="100">
+                  <col width="120">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th><input name="" type="checkbox" value="" id="all"></th>
+                    <th>#</th>
+                    <th>商品名称</th>
+                    <th>品牌</th>
+                    <th>产地</th>
+                    <th>介绍</th>
+                    <th class="oldPrice"><span>价格(原价)</span><span class="layui-table-sort layui-inline"><i class="layui-edge layui-table-sort-asc" title="升序"></i><i class="layui-edge layui-table-sort-desc" title="降序"></i></span></th>
+                    <th class="newPrice"><span>价格(现价)</span><span class="layui-table-sort layui-inline"><i class="layui-edge layui-table-sort-asc" title="升序"></i><i class="layui-edge layui-table-sort-desc" title="降序"></i></span></th>
+                    <th class="stock"><span>库存</span><span class="layui-table-sort layui-inline"><i class="layui-edge layui-table-sort-asc" title="升序"></i><i class="layui-edge layui-table-sort-desc" title="降序"></i></span></th>
+                    <th>发布状态</th>
+                    <th>操作</th>
+                  </tr> 
+                </thead>
+                <tbody>
+                  <!-- <tr>
+                    <th><input name="" type="checkbox" value=""></th>
+                    <td>1</td>
+                    <td>爱他美1罐900克</td>
+                    <td>爱他美</td>
+                    <td>荷兰</td>
+                    <td>好喝就选它</td>
+                    <td>500</td>
+                    <td>525</td>
+                    <td>30</td>
+                    <td>已上线
+                    </td>
+                    <td>
+                      <a class="layui-btn layui-btn-xs" lay-event="edit" onclick="updateGoods()">编辑</a>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><input name="" type="checkbox" value=""></th>
+                    <td>2</td>
+                    <td>爱他美1罐900克</td>
+                    <td>爱他美</td>
+                    <td>荷兰</td>
+                    <td>好喝就选它</td>
+                    <td>500</td>
+                    <td>525</td>
+                    <td>30</td>
+                    <td>已上线</td>
+                    <td>
+                      <a class="layui-btn layui-btn-xs" lay-event="edit" onclick="updateGoods()">编辑</a>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><input name="" type="checkbox" value=""></th>
+                    <td>3</td>
+                    <td>爱他美1罐900克</td>
+                    <td>爱他美</td>
+                    <td>荷兰</td>
+                    <td>好喝就选它</td>
+                    <td>500</td>
+                    <td>525</td>
+                    <td>30</td>
+                    <td>已上线</td>
+                    <td>
+                      <a class="layui-btn layui-btn-xs" lay-event="edit" onclick="updateGoods()">编辑</a>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </td>
+                  </tr> -->
+                </tbody>
+              </table>
+              <div id="fenYe" style="padding-top:8px;">
+                <button onclick="goPage('first')" class="ye">首页</button>
+                <button onclick="goPage('prev')" class="ye">上一页</button>
+                <span>第<span class="now">0</span>页/共<span class="sum">0</span>页</span>
+                <input type="text" min="1" value="1" id="jump">
+                <button onclick="goPage('jump')" class="ye">Go</button>      
+                <button onclick="goPage('next')" class="ye">下一页</button>
+                <button onclick="goPage('last')" class="ye">尾页</button>
+              </div>
+              </div>
+            <!-- </div> -->
+          </div>
+        </div> 
+      </div>
+    </div>
+    <script src="../layui/layui.js"></script>
+    <script src="../layui/layui.all.js"></script>
+    <script>
+      let reload = document.querySelector('#test-table-demoReload');
+      let tbody = document.querySelector('tbody');
+      let fenYe = document.querySelector('#fenYe');
+      let now = document.querySelector('.now');
+      let sum = document.querySelector('.sum');
+      let jump = document.querySelector('#jump');
+      let rootpath = 'http://localhost:5002';
+      let pagesize = 10;
+      let total = 0;
+      let nowpage = 1;
+      let oldSort=0;      // 不排序/降序/升序
+      let newSort=0;      // 不排序/降序/升序
+      let stockSort=0;    // 不排序/降序/升序
+      let preventSort=0;  // 不排序/降序/升序
+      let attr="";   // 要排序的对象
+      getListData(attr,0,1);
+      function getListData(attr,sort,page){
+        nowpage=page;
+        let url = rootpath+'/goods/getGoods';
+        if(reload.value.length==0){
+          let xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function(){
+            if(xhr.readyState==4){
+              let res = JSON.parse(xhr.responseText);// console.log(res);
+              if(res.err==0){// console.log(res.data);
+                load(res.data);
+                total=res.data.total;
+                now.innerHTML=page;
+                sum.innerHTML=Math.ceil(total/pagesize);
+              }
+            }
+          }
+          xhr.open("post",url,true);
+          xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+          xhr.send("attr="+attr+"&sort="+sort+"&pagesize="+pagesize+"&page="+page);// xhr.send();
+        }
+      }
+      // 列表渲染
+      function load(data){
+        if(data.goodslist.length>0){
+        // if(data.length>0){
+          let td='';
+          for(var i=0;i<data.goodslist.length;i++){
+            let string=`<tr>
+                    <td><input name="" type="checkbox"></td>
+                    <td data-id="${data['goodslist'][i]['_id']}">${i+1}</td>
+                    <td>${data['goodslist'][i]['name']}</td>
+                    <td>${data['goodslist'][i]['brand']}</td>
+                    <td>${data['goodslist'][i]['country']}</td>
+                    <td>${data['goodslist'][i]['title']}</td>
+                    <td>${data['goodslist'][i]['oldprice']}</td>
+                    <td>${data['goodslist'][i]['newprice']}</td>
+                    <td>${data['goodslist'][i]['stock']}</td>
+                    <td>已${data['goodslist'][i]['grounding']}</td>
+                    <td>
+                      <a class="layui-btn layui-btn-xs" lay-event="edit" onclick="updateGoods('${data['goodslist'][i]['_id']}')">编辑</a>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="del(this,'${data['goodslist'][i]['_id']}')">删除</a>
+                    </td>
+                  </tr>`
+              td+=string;
+          }
+          tbody.innerHTML=td;
+          fenYe.setAttribute("display","block");
+        }else{
+          tbody.innerHTML='没有商品';
+          fenYe.setAttribute("display","none");
+        }
+      }
+      // 分页处理
+      function goPage(type){
+        let sum2 = sum.innerHTML;  
+        let page=1;//page表示目标页
+        switch (type) {
+          case 'first' : 
+            page=1;
+            now.innerHTML=page;
+            getListData(attr,preventSort,page);
+            getSearchGoods(attr,preventSort,page);
+            break;
+          case 'last' : 
+            page=Math.ceil(total/pagesize);
+            now.innerHTML=page;
+            getListData(attr,preventSort,page);
+            getSearchGoods(attr,preventSort,page);
+            break;
+          case 'jump' : 
+            page=jump.value;
+            now.innerHTML=page;
+            getListData(attr,preventSort,page);
+            getSearchGoods(attr,preventSort,page);
+            break;
+          case 'prev':
+            if(nowpage > 1){
+              page=nowpage-1;
+              now.innerHTML=page;
+              getListData(attr,preventSort,page);
+              getSearchGoods(attr,preventSort,page);
+            }else{
+              page=1;
+            }       
+            break;
+          case 'next':
+            if(nowpage < sum2){
+              page=nowpage+1;
+              now.innerHTML=page;
+              getListData(attr,preventSort,page);
+              getSearchGoods(attr,preventSort,page);
+            }else{
+              page=sum2;
+            }       
+            break;
+        }
+        // now.innerHTML=page;
+        // getListData(attr,preventSort,page);
+        // getSearchGoods(attr,preventSort,page);
+      }
+      // 搜索
+      function search(){
+        getSearchGoods(attr,preventSort,1);
+      }
+      function getSearchGoods(attr,sort,page){
+        let url = rootpath + '/goods/findGoods';
+        let _reload = reload.value;
+        let data={
+          attr:attr,
+          sort:sort,
+          reload:_reload,
+          pagesize:pagesize,
+          page:page
+        }
+        if(_reload.length>0){
+          let xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function(){
+            if(xhr.readyState==4){
+              let res = JSON.parse(xhr.responseText);
+              if(res.err == 0){
+                load(res.data);
+                // $('#total').html(res.data.total);
+                total=res.data.total;
+                now.innerHTML=page;
+                sumpage = Math.ceil(total/pagesize);
+                if(sumpage==0){
+                  return sum.innerHTML=1;
+                }       
+                sum.innerHTML=sumpage;
+              }
+            }
+          }
+          xhr.open("post",url,true);
+          xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+          xhr.send("attr="+attr+"&sort="+sort+"&reload="+_reload+"&pagesize="+pagesize+"&page="+page);
+        }
+      }
+      // 排序
+      let oldprice = document.querySelector('.oldPrice');
+      let newprice = document.querySelector('.newPrice');
+      let stock = document.querySelector('.stock');
+      function sort(ele,sort){
+        if(sort==0){
+          sort=sort-1;
+          ele.children[1].setAttribute("lay-sort","desc");
+        }else if(sort<0){
+          sort=sort+2;
+          ele.children[1].setAttribute("lay-sort","asc");
+        }else if(sort==1){
+          sort=sort-1;
+          ele.children[1].removeAttribute("lay-sort");
+        }
+        return sort;
+      }
+      oldprice.onclick=function(){//console.log('原价');
+        attr="oldprice";
+        oldSort=sort(oldprice,oldSort);
+        preventSort=oldSort;
+        newSort=0;
+        newprice.children[1].removeAttribute("lay-sort");
+        stockSort=0;
+        stock.children[1].removeAttribute("lay-sort");
+        getListData(attr,oldSort,1);
+        getSearchGoods(attr,oldSort,1);
+      }
+      newprice.onclick=function(){//console.log('现价');
+        attr="newprice";
+        newSort=sort(newprice,newSort);
+        preventSort=newSort;
+        oldSort=0;
+        oldprice.children[1].removeAttribute("lay-sort");
+        stockSort=0;
+        stock.children[1].removeAttribute("lay-sort");
+        getListData(attr,newSort,1);
+        getSearchGoods(attr,newSort,1);
+      }
+      stock.onclick=function(){//console.log('库存');
+        attr="stock";
+        stockSort=sort(stock,stockSort);
+        preventSort=stockSort;
+        oldSort=0;
+        oldprice.children[1].removeAttribute("lay-sort");
+        newSort=0;
+        newprice.children[1].removeAttribute("lay-sort");
+        getListData(attr,stockSort,1);
+        getSearchGoods(attr,stockSort,1);
+      }
+      // 添加商品
+      function addGoods(){
+        location.href = 'product-add.html';
+      }
+      // 商品编辑
+      function updateGoods(id){
+        location.href = 'product-update.html';
+        let storage=window.localStorage;//获取storage对象
+        storage.setItem("updateId",id);//添加缓存
+      }
+      //全选
+      let all = document.querySelector('#all');    
+      all.onclick = function(){
+        let checks = tbody.querySelectorAll("input");
+        for(let i=0;i<checks.length;i++){
+          checks[i].checked = this.checked;
+        }
+      }
+      function checksAll(){
+        let checks = tbody.querySelectorAll("input");
+        for(let i=0;i<checks.length;i++){
+          if(!checks[i].checked){
+              all.checked = "";
+              break;
+          }else{
+              all.checked = "checked";
+          }                       
+        }                  
+      }
+      tbody.onclick = function(e){
+        let tagName = e.target.tagName.toLowerCase();
+        if(tagName == "input"){
+          checksAll();
+        }
+      }
+      
+      //批量删除
+      function delMore(){
+        let checks = tbody.querySelectorAll("input");//console.log(checks);    
+        let idx="";
+        for(let i=0;i<checks.length;i++){
+          if(checks[i].checked){// console.log(checks[i]);
+            idx+=","+checks[i].parentElement.nextElementSibling.getAttribute("data-id");
+          }
+        }
+        idx=idx.slice(1);//console.log(idx);
+        del(this,idx);
+      } 
+    </script>
+    <script>
+      //商品删除
+      function del(obj,id){
+        let url = rootpath+'/goods/delGoods';
+        layui.use('table', function(){
+          var table = layui.table;
+          layer.confirm('确定要删除吗？', function(index){
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function(){
+              if(xhr.readyState==4){
+                let res = JSON.parse(xhr.responseText);// console.log(res);    
+                if(res.err==0){
+                  layer.msg('已删除!',{icon:1,time:1000});
+                  getListData(attr,preventSort,1);
+                }
+              }
+            }
+            xhr.open("post",url,true);
+            xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+            xhr.send("id="+id);
+            layer.close(index);
+          });
+        });
+      }
+    </script> 
+  </body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>开始使用layui</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="../css/admin.css">
+  </head>
+  <body layadmin-themealias="default">
+    <div class="layui-card layadmin-header" style="display: block;">
+      <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+        <a lay-href="">首页</a>
+        <span lay-separator="">/</span><a>商品管理</a>
+        <span lay-separator="">/</span><a><cite>商品分类</cite></a>
+      </div>
+    </div>
+    <div class="layui-fluid">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+          <div class="layui-card">
+            <!-- <div class="layui-card-header">订单统计</div> -->
+            <div class="layui-card-body">
+              <button class="layui-btn layui-btn-sm" onclick="addCategory()"><i class="layui-icon"></i>添加</button>
+              <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="delMore()"><i class="layui-icon"></i>批量删除</button>
+              <table class="layui-table">
+                <colgroup>
+                  <col width="40">
+                  <col width="60">
+                  <col>
+                  <col width="200">
+                  <col width="150">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th><input name="" type="checkbox" value="" id="all"></th>
+                    <th>#</th>
+                    <th>商品分类</th>
+                    <th>添加时间</th>
+                    <th>操作</th>
+                  </tr> 
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input name="" type="checkbox" value=""></td>
+                    <td>1</td>
+                    <td>爱他美 行货版</td>
+                    <td>2018-12-12</td>
+                    <td>
+                      <a class="layui-btn layui-btn-xs" lay-event="edit" onclick="updateCategory()">编辑</a>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><input name="" type="checkbox" value=""></td>
+                    <td>2</td>
+                    <td>爱他美 跨境版</td>
+                    <td>2018-12-12</td>
+                    <td>
+                      <a class="layui-btn layui-btn-xs" lay-event="edit" onclick="updateCategory()">编辑</a>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><input name="" type="checkbox" value=""></td>
+                    <td>3</td>
+                    <td>爱他美 英澳</td>
+                    <td>2018-12-12</td>
+                    <td>
+                      <a class="layui-btn layui-btn-xs" lay-event="edit" onclick="updateCategory()">编辑</a>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div>
+    <script src="../layui/layui.js"></script>
+    <script src="../layui/layui.all.js"></script>
+    <script>
+      let tbody = document.querySelector('tbody');
+      let rootpath = 'http://localhost:5002';
+      let pagesize = 10;
+      let total = 0;
+      let nowpage = 1;
+      getListData(1);
+      function getListData(page){
+        let url = rootpath+'/category/getCategory';
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+          if(xhr.readyState==4){
+            let res = JSON.parse(xhr.responseText);// console.log(res);
+            if(res.err==0){// console.log(res.data);
+              load(res.data);
+              total=res.data.total;
+            }
+          }
+        }
+        xhr.open("post",url,true);
+        xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+        // xhr.send();
+        xhr.send("pagesize="+pagesize+"&page="+page);
+      }
+      // 列表渲染
+      function load(data){
+        if(data.categorylist.length>0){
+        // if(data.length>0){
+          let td='';
+          for(var i=0;i<data.categorylist.length;i++){
+            let string=`<tr>
+                    <td><input name="" type="checkbox" value=""></td>
+                    <td data-id="${data['categorylist'][i]['_id']}">${i+1}</td>
+                    <td>${data['categorylist'][i]['genre']}</td>
+                    <td>${data['categorylist'][i]['date']}</td>
+                    <td>
+                      <a class="layui-btn layui-btn-xs" lay-event="edit" onclick="updateCategory('${data['categorylist'][i]['_id']}')">编辑</a>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="del(this,'${data['categorylist'][i]['_id']}')">删除</a>
+                    </td>
+                  </tr>`
+              td+=string;
+          }
+          tbody.innerHTML=td;
+        }else{
+          tbody.innerHTML='没有商品分类';
+        }
+      }
+      // 添加分类
+      function addCategory(){
+        location.href = 'category-add.html';
+      }
+      // 分类编辑
+      function updateCategory(id){
+        location.href = 'category-update.html';
+        let storage=window.localStorage;//获取storage对象
+        storage.setItem("categoryId",id);//添加缓存
+      }
+      //全选
+      let all = document.querySelector('#all');    
+      all.onclick = function(){
+        let checks = tbody.querySelectorAll("input");
+        for(let i=0;i<checks.length;i++){
+          checks[i].checked = this.checked;
+        }
+      }
+      function checksAll(){
+        let checks = tbody.querySelectorAll("input");
+        for(let i=0;i<checks.length;i++){
+          if(!checks[i].checked){
+              all.checked = "";
+              break;
+          }else{
+              all.checked = "checked";
+          }                       
+        }                  
+      }
+      tbody.onclick = function(e){
+        let tagName = e.target.tagName.toLowerCase();
+        if(tagName == "input"){
+          checksAll();
+        } 
+      }
+      //批量删除
+      function delMore(){
+        let checks = tbody.querySelectorAll("input");//console.log(checks);    
+        let idx="";
+        for(let i=0;i<checks.length;i++){
+          if(checks[i].checked){// console.log(checks[i]);
+            idx+=","+checks[i].parentElement.nextElementSibling.getAttribute("data-id");
+          }
+        }
+        idx=idx.slice(1);//console.log(idx);
+        del(this,idx);
+      } 
+    </script> 
+    <script>
+      //商品删除
+      function del(obj,id){
+        let url = rootpath+'/category/delCategory';
+        layui.use('table', function(){
+          var table = layui.table;
+          layer.confirm('确定要删除吗？', function(index){
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function(){
+              if(xhr.readyState==4){
+                let res = JSON.parse(xhr.responseText);// console.log(res);    
+                if(res.err==0){
+                  layer.msg('已删除!',{icon:1,time:1000});
+                  getListData(1);
+                }
+              }
+            }
+            xhr.open("post",url,true);
+            xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+            xhr.send("id="+id);
+            layer.close(index);
+          });
+        });
+      }
+    </script> 
+  </body>
+</html>

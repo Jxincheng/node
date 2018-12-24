@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>开始使用layui</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="../css/admin.css">
+  </head>
+  <body layadmin-themealias="default">
+    <div class="layui-card layadmin-header" style="display: block;">
+      <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+        <a lay-href="">首页</a>
+        <span lay-separator="">/</span><a>商品管理</a>
+        <span lay-separator="">/</span><a><cite>添加商品</cite></a>
+      </div>
+    </div>
+    <div class="layui-fluid">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+          <div class="layui-card">
+            <!-- <div class="layui-card-header">订单统计</div> -->
+            <div class="layui-card-body">
+              <form class="layui-form" action="product-list.html">
+                <div class="layui-form-item">
+                  <label class="layui-form-label">商品名称</label>
+                  <div class="layui-input-block">
+                    <input type="text" id="name" name="title" lay-verify="title" autocomplete="off" placeholder="请输入商品名称" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <label class="layui-form-label">品牌</label>
+                  <div class="layui-input-block">
+                    <input type="text" id="brand" name="title" lay-verify="title" autocomplete="off" placeholder="请输入商品品牌" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <div class="layui-inline">
+                    <label class="layui-form-label">分类</label>
+                    <div class="layui-input-inline">
+                      <select id="genre" name="quiz" value="">
+                        <option value="爱他美 行货版">爱他美 行货版</option>
+                        <option value="爱他美 跨境版">爱他美 跨境版</option>
+                        <option value="爱他美 英澳">爱他美 英澳</option>
+                        <option value="爱他美 德澳">爱他美 德澳</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <label class="layui-form-label">产地</label>
+                  <div class="layui-input-block">
+                    <input type="text" id="country" name="title" lay-verify="title" autocomplete="off" placeholder="请输入商品产地" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <label class="layui-form-label">介绍</label>
+                  <div class="layui-input-block">
+                    <input type="text" id="title" name="title" lay-verify="title" autocomplete="off" placeholder="请输入商品介绍" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <label class="layui-form-label">价格(原价)</label>
+                  <div class="layui-input-block">
+                    <input type="text" id="oldprice" name="title" lay-verify="title" autocomplete="off" placeholder="请输入商品原价格" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <label class="layui-form-label">价格(现价)</label>
+                  <div class="layui-input-block">
+                    <input type="text" id="newprice" name="title" lay-verify="title" autocomplete="off" placeholder="请输入商品销售价格" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <label class="layui-form-label">库存</label>
+                  <div class="layui-input-block">
+                    <input type="text" id="stock" name="title" lay-verify="title" autocomplete="off" placeholder="请输入商品库存" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <label class="layui-form-label">是否上线</label>
+                  <div class="layui-input-block">
+                    <input type="checkbox" checked="" id="grounding" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="上线|下架">
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <div class="layui-inline">
+                    <label class="layui-form-label">日期</label>
+                    <div class="layui-input-inline">
+                      <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <div class="layui-inline">
+                    <label class="layui-form-label">商品图片</label>
+                    <div class="layui-input-inline">
+                      <input type="file" id="file" name="title" lay-verify="title" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                  </div>
+                  <img src="" id="uploadimg">
+                  <button id="ajaximg">上传图片</button>
+                </div> 
+                <div class="layui-form-item">
+                  <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="demo1" id="submits">立即提交</button>
+                    <button class="layui-btn layui-btn-primary" onclick="cancel()">取消</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../layui/layui.js"></script>
+    <script src="../layui/layui.all.js"></script>
+    <script src="../js/date.js"></script>
+    <script>
+      let rootPath='http://localhost:5002';
+      let upload=false; //图片上传状态
+      //上传
+      let ajaximg = document.querySelector('#ajaximg');
+      ajaximg.onclick = function(e){
+        e.preventDefault();
+        let file = document.querySelector('#file');
+        let uploadimg = document.querySelector('#uploadimg');
+        let data=new FormData();
+        let file2=file.files[0];
+        data.append('goodspic',file2);
+
+        let xhr = new XMLHttpRequest();
+        xhr.onload = ()=>{
+            // console.log(xhr.responseText);
+            let res = JSON.parse(xhr.responseText);
+            if(res.err==0){
+              // console.log(res.data.path);
+              uploadimg.setAttribute("src",rootPath+"/"+res.data.path);
+              upload=true;
+            }
+        }
+        xhr.open('post',rootPath+'/upload/img',true);
+        // xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+        xhr.send(data);
+      }
+
+      let submits = document.querySelector('#submits');
+      let name = document.querySelector('#name');
+      let brand = document.querySelector('#brand');
+      let genre = document.querySelector('#genre');
+      let country = document.querySelector('#country');
+      let title = document.querySelector('#title');
+      let oldprice = document.querySelector('#oldprice');
+      let newprice = document.querySelector('#newprice');
+      let stock = document.querySelector('#stock');
+      let grounding = document.querySelector('#grounding');
+      let date = document.querySelector('#date');
+      let uploadimg2 = document.querySelector('#uploadimg');
+      // 提交
+      submits.onclick = function(e){
+        e.preventDefault();
+        if(upload){
+          let url=rootPath+'/goods/addGoods';
+          // let data={
+          //       name:name.value,
+          //       brand:brand.value,
+          //       genre:genre.value,
+          //       country:country.value,
+          //       title:title.value,
+          //       oldprice:oldprice.value,
+          //       newprice:newprice.value,   
+          //       stock:stock.value,
+          //       grounding:grounding.nextElementSibling.innerText,
+          //       date:date.value,
+          //       imgpath:uploadimg2.getAttribute("src")
+          // }
+          let data="name="+name.value+"&brand="+brand.value+"&genre="+genre.value+"&country="+country.value+"&title="+title.value+"&oldprice="+oldprice.value+"&newprice="+newprice.value+"&stock="+stock.value+"&grounding="+grounding.nextElementSibling.innerText+"&date="+date.value+"&imgpath="+uploadimg2.getAttribute("src");
+          let xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function(){
+            if(xhr.readyState==4){
+              let res = JSON.parse(xhr.responseText);
+              // console.log(res);
+              if(res.err==0){
+                location.href='product-list.html';
+              }else{
+                alert('提交失败请重试');
+              }
+            }
+          }
+          xhr.open("post",url,true);
+          xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+          xhr.send(data);
+        }else{
+          alert('请先上传图片');
+        }
+      }
+      // 取消添加商品
+      function cancel(){
+        // console.log('取消');
+      }
+    </script> 
+  </body>
+</html>

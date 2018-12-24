@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>开始使用layui</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <style type="text/css">
+      #fenYe{width: 500px; margin: 0 auto;}
+      .ye{
+        height: 26px;
+        padding: 0 10px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .ye:hover{background-color: #009688;color:#fff;}
+      .oldPrice,.newPrice,.stock{cursor: pointer;}
+      #jump{width: 36px;height: 22px;text-align: center;}
+      .now,.sum{font-weight: bolder;}
+    </style>
+  </head>
+  <body layadmin-themealias="default">
+    <div class="layui-card layadmin-header" style="display: block;">
+      <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+        <a lay-href="">首页</a>
+        <span lay-separator="">/</span><a>订单管理</a>
+        <span lay-separator="">/</span><a><cite>订单列表</cite></a>
+      </div>
+    </div>
+    <div class="layui-fluid">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+          <div class="layui-card">
+            <div class="layui-card-body">
+               <div class="layui-table-box">
+              <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="delMore()"><i class="layui-icon"></i>批量删除</button>
+              <table class="layui-table">
+                <colgroup>
+                  <col width="40">
+                  <col width="40">
+                  <col width="140">
+                  <col width="120">
+                  <col width="100">
+                  <col>
+                  <col width="140">
+                  <col width="140">
+                  <col width="140">
+                  <col width="120">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th><input name="" type="checkbox" value="" id="all"></th>
+                    <th>#</th>
+                    <th>商品名称</th>
+                    <th>价格</th>
+                    <th>数量</th>
+                    <th>运费</th>
+                    <th>商品总额</th>
+                    <th class="newPrice">订单总额<!-- <span>订单总额</span><span class="layui-table-sort layui-inline"><i class="layui-edge layui-table-sort-asc" title="升序"></i><i class="layui-edge layui-table-sort-desc" title="降序"></i></span> --></th>
+                    <th class="stock">下单时间<!-- <span>下单时间</span><span class="layui-table-sort layui-inline"><i class="layui-edge layui-table-sort-asc" title="升序"></i><i class="layui-edge layui-table-sort-desc" title="降序"></i></span> --></th>
+                    <th>操作</th>
+                  </tr> 
+                </thead>
+                <tbody>
+                  <tr>
+                    <th><input name="" type="checkbox" value=""></th>
+                    <td>1</td>
+                    <td>iphone1</td>
+                    <td>998</td>
+                    <td>1</td>
+                    <td>20</td>
+                    <td>998</td>
+                    <td>1018</td>
+                    <td>2018-11-11</td>
+                    <td>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><input name="" type="checkbox" value=""></th>
+                    <td>2</td>
+                    <td>iphone2</td>
+                    <td>1998</td>
+                    <td>2</td>
+                    <td>30</td>
+                    <td>3996</td>
+                    <td>4026</td>
+                    <td>2018-11-11</td>
+                    <td>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><input name="" type="checkbox" value=""></th>
+                    <td>3</td>
+                    <td>iphone3</td>
+                    <td>3998</td>
+                    <td>3</td>
+                    <td>25</td>
+                    <td>11994</td>
+                    <td>12019</td>
+                    <td>2018-11-11</td>
+                    <td>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div id="fenYe" style="padding-top:8px;">
+                <button onclick="goPage('first')" class="ye">首页</button>
+                <button onclick="goPage('prev')" class="ye">上一页</button>
+                <span>第<span class="now">0</span>页/共<span class="sum">0</span>页</span>
+                <input type="text" min="1" value="1" id="jump">
+                <button onclick="goPage('jump')" class="ye">Go</button>      
+                <button onclick="goPage('next')" class="ye">下一页</button>
+                <button onclick="goPage('last')" class="ye">尾页</button>
+              </div>
+              </div>
+          </div>
+        </div> 
+      </div>
+    </div>
+    <script src="../layui/layui.js"></script>
+    <script src="../layui/layui.all.js"></script>
+    <script>
+      let tbody = document.querySelector('tbody');
+      let fenYe = document.querySelector('#fenYe');
+      let now = document.querySelector('.now');
+      let sum = document.querySelector('.sum');
+      let jump = document.querySelector('#jump');
+      let rootpath = 'http://localhost:5002';
+      let pagesize = 10;
+      let total = 0;
+      let nowpage = 1;
+      let oldSort=0;      // 不排序/降序/升序
+      let newSort=0;      // 不排序/降序/升序
+      let stockSort=0;    // 不排序/降序/升序
+      let preventSort=0;  // 不排序/降序/升序
+      let attr="";   // 要排序的对象
+      getListData(attr,0,1);
+      function getListData(attr,sort,page){
+        nowpage=page;
+        let url = rootpath+'/order/getOrder';
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+          if(xhr.readyState==4){
+            let res = JSON.parse(xhr.responseText);// console.log(res);
+            if(res.err==0){// console.log(res.data);
+              load(res.data);
+              total=res.data.total;
+              now.innerHTML=page;
+              sum.innerHTML=Math.ceil(total/pagesize);
+            }
+          }
+        }
+        xhr.open("post",url,true);
+        xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+        xhr.send("attr="+attr+"&sort="+sort+"&pagesize="+pagesize+"&page="+page);// xhr.send();
+      }
+      // 列表渲染
+      function load(data){
+        if(data.orderlist.length>0){
+        // if(data.length>0){
+          let td='';
+          for(var i=0;i<data.orderlist.length;i++){
+            let string=`<tr>
+                    <td><input name="" type="checkbox" value=""></td>
+                    <td data-id="${data['orderlist'][i]['_id']}">${i+1}</td>
+                    <td>${data['orderlist'][i]['goodsname']}</td>
+                    <td>${data['orderlist'][i]['price']}</td>
+                    <td>${data['orderlist'][i]['num']}</td>
+                    <td>${data['orderlist'][i]['freight']}</td>
+                    <td>${data['orderlist'][i]['goodstotal']}</td>
+                    <td>${data['orderlist'][i]['ordertotal']}</td>
+                    <td>${data['orderlist'][i]['date']}</td>
+                    <td>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="del(this,'${data['orderlist'][i]['_id']}')">删除</a>
+                    </td></tr>`
+              td+=string;
+          }
+          tbody.innerHTML=td;
+          fenYe.setAttribute("display","block");
+        }else{
+          tbody.innerHTML='没有订单';
+          fenYe.setAttribute("style","display:none;");
+        }
+      }
+      // 分页处理
+      function goPage(type){
+        let sum2 = sum.innerHTML;  
+        let page=1;//page表示目标页
+        switch (type) {
+          case 'first' : 
+            page=1;
+            break;
+          case 'last' : 
+            page=Math.ceil(total/pagesize);
+            break;
+          case 'jump' : 
+            page=jump.value;
+            break;
+          case 'prev':
+            if(nowpage > 1){
+              page=nowpage-1;
+            }else{
+              page=1;
+            }       
+            break;
+          case 'next':
+            if(nowpage < sum2){
+              page=nowpage+1;
+            }else{
+              page=sum2;
+            }       
+            break;
+        }
+        now.innerHTML=page;
+        getListData(attr,preventSort,page);
+        // getSouGoods(attr,sort,page);
+      }
+      //全选
+      let all = document.querySelector('#all');    
+      all.onclick = function(){
+        let checks = tbody.querySelectorAll("input");
+        for(let i=0;i<checks.length;i++){
+          checks[i].checked = this.checked;
+        }
+      }
+      function checksAll(){
+        let checks = tbody.querySelectorAll("input");
+        for(let i=0;i<checks.length;i++){
+          if(!checks[i].checked){
+              all.checked = "";
+              break;
+          }else{
+              all.checked = "checked";
+          }                       
+        }                  
+      }
+      tbody.onclick = function(e){
+        let tagName = e.target.tagName.toLowerCase();
+        if(tagName == "input"){
+          checksAll();
+        }
+      }
+      //批量删除
+      function delMore(){
+        let checks = tbody.querySelectorAll("input");//console.log(checks);    
+        let idx="";
+        for(let i=0;i<checks.length;i++){
+          if(checks[i].checked){// console.log(checks[i]);
+            idx+=","+checks[i].parentElement.nextElementSibling.getAttribute("data-id");
+          }
+        }
+        idx=idx.slice(1);//console.log(idx);
+        del(this,idx);
+      }
+    </script>
+    <script>
+      //用户删除
+      function del(obj,id){
+        let url = rootpath+'/order/delOrder';
+        layui.use('table', function(){
+          var table = layui.table;
+          layer.confirm('确定要删除吗？', function(index){
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function(){
+              if(xhr.readyState==4){
+                let res = JSON.parse(xhr.responseText);// console.log(res);    
+                if(res.err==0){
+                  layer.msg('已删除!',{icon:1,time:1000});
+                  getListData(attr,preventSort,1);
+                }
+              }
+            }
+            xhr.open("post",url,true);
+            xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+            xhr.send("id="+id);
+            layer.close(index);
+          });
+        });
+      }
+    </script>   
+  </body>
+</html>

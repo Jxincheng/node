@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>开始使用layui</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <style type="text/css">
+      h3{font-weight: 900;font-size: 18px;}
+      .order{
+        display: flex;
+        justify-content: space-between;font-weight: 700;
+      }
+      .order div{flex: 1;text-align: center;}
+      .num{height: 60px;line-height: 60px;font-size: 30px;color: #ff9900;}
+      .order div p:nth-child(2){font-size: 16px;}
+    </style>
+  </head>
+  <body layadmin-themealias="default">
+    <div class="layui-card layadmin-header" style="display: block;">
+      <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+        <a lay-href="">首页</a>
+      </div>
+    </div>
+    <div class="layui-fluid">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+          <div class="layui-card">
+            <div class="layui-card-header"><h3>订单统计</h3></div>
+            <div class="layui-card-body">
+              <hr>
+                <div class="order">
+                  <div>
+                    <p class="num">20</p>
+                    <p>成交量（件）</p>
+                  </div>
+                  <div>
+                    <p class="num">20</p>
+                    <p>成交额（元）</p>
+                  </div>
+                  <div>
+                    <p class="num">20</p>
+                    <p>人均消费（元）</p>
+                  </div>
+                </div>
+              <hr>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../layui/layui.js"></script>
+    <script src="../layui/layui.all.js"></script>
+  <script>
+
+  </script> 
+  </body>
+</html>

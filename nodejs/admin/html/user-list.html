@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>开始使用layui</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <style type="text/css">
+      table{text-align: center;}
+      thead tr th:nth-child(3),th:nth-child(4),th:nth-child(5),th:nth-child(6),th:nth-child(7),th:nth-child(8),th:nth-child(9),th:nth-child(10){text-align: center;}
+      /*thead tr th{text-align: center;}*/
+      #fenYe{width: 500px; margin: 0 auto;}
+      .ye{
+        height: 26px;
+        padding: 0 10px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .ye:hover{background-color: #009688;color:#fff;}
+      .oldPrice,.newPrice,.stock{cursor: pointer;}
+      #jump{width: 36px;height: 22px;text-align: center;}
+      .now,.sum{font-weight: bolder;}
+    </style>
+  </head>
+  <body layadmin-themealias="default">
+    <div class="layui-card layadmin-header" style="display: block;">
+      <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+        <a lay-href="">首页</a>
+        <span lay-separator="">/</span><a>用户管理</a>
+        <span lay-separator="">/</span><a><cite>用户列表</cite></a>
+      </div>
+    </div>
+    <div class="layui-fluid">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+          <div class="layui-card">
+            <div class="layui-card-body">
+               <div class="layui-table-box">
+              <button class="layui-btn layui-btn-sm" onclick="addCustomer()"><i class="layui-icon"></i>添加</button>
+              <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="delMore()"><i class="layui-icon"></i>批量删除</button>
+              <table class="layui-table">
+                <colgroup>
+                  <col width="40">
+                  <col width="40">
+                  <col width="120">
+                  <col width="80">
+                  <col width="100">
+                  <col>
+                  <col width="140">
+                  <col width="120">
+                  <col width="160">
+                  <col width="120">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th><input name="" type="checkbox" value="" id="all"></th>
+                    <th>#</th>
+                    <th>用户名</th>
+                    <th>性别</th>
+                    <th>城市</th>
+                    <th>签名</th>
+                    <th>职业</th>
+                    <th class="newPrice"><span>评分</span><span class="layui-table-sort layui-inline"><i class="layui-edge layui-table-sort-asc" title="升序"></i><i class="layui-edge layui-table-sort-desc" title="降序"></i></span></th>
+                    <th class="stock"><span>注册时间</span><span class="layui-table-sort layui-inline"><i class="layui-edge layui-table-sort-asc" title="升序"></i><i class="layui-edge layui-table-sort-desc" title="降序"></i></span></th>
+                    <th>操作</th>
+                  </tr> 
+                </thead>
+                <tbody>
+                  <tr>
+                    <th><input name="" type="checkbox" value=""></th>
+                    <td>1</td>
+                    <td>user1</td>
+                    <td>女</td>
+                    <td>城市1</td>
+                    <td>user1</td>
+                    <td>作家</td>
+                    <td>525</td>
+                    <td>2018-11-11</td>
+                    <td>
+                      <a class="layui-btn layui-btn-xs" lay-event="edit" onclick="updateGoods()">编辑</a>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><input name="" type="checkbox" value=""></th>
+                    <td>2</td>
+                    <td>user2</td>
+                    <td>男</td>
+                    <td>城市2</td>
+                    <td>user2</td>
+                    <td>词人</td>
+                    <td>325</td>
+                    <td>2018-11-11</td>
+                    <td>
+                      <a class="layui-btn layui-btn-xs" lay-event="edit" onclick="updateGoods()">编辑</a>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th><input name="" type="checkbox" value=""></th>
+                    <td>3</td>
+                    <td>user3</td>
+                    <td>女</td>
+                    <td>城市3</td>
+                    <td>user3</td>
+                    <td>酱油</td>
+                    <td>650</td>
+                    <td>2018-11-11</td>
+                    <td>
+                      <a class="layui-btn layui-btn-xs" lay-event="edit" onclick="updateGoods()">编辑</a>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div id="fenYe" style="padding-top:8px;">
+                <button onclick="goPage('first')" class="ye">首页</button>
+                <button onclick="goPage('prev')" class="ye">上一页</button>
+                <span>第<span class="now">0</span>页/共<span class="sum">0</span>页</span>
+                <input type="text" min="1" value="1" id="jump">
+                <button onclick="goPage('jump')" class="ye">Go</button>      
+                <button onclick="goPage('next')" class="ye">下一页</button>
+                <button onclick="goPage('last')" class="ye">尾页</button>
+              </div>
+              </div>
+          </div>
+        </div> 
+      </div>
+    </div>
+    <script src="../layui/layui.js"></script>
+    <script src="../layui/layui.all.js"></script>
+    <script>
+      let tbody = document.querySelector('tbody');
+      let fenYe = document.querySelector('#fenYe');
+      let now = document.querySelector('.now');
+      let sum = document.querySelector('.sum');
+      let jump = document.querySelector('#jump');
+      let rootpath = 'http://localhost:5002';
+      let pagesize = 10;
+      let total = 0;
+      let nowpage = 1;
+      let oldSort=0;      // 不排序/降序/升序
+      let newSort=0;      // 不排序/降序/升序
+      let stockSort=0;    // 不排序/降序/升序
+      let preventSort=0;  // 不排序/降序/升序
+      let attr="";   // 要排序的对象
+      getListData(attr,0,1);
+      function getListData(attr,sort,page){
+        nowpage=page;
+        let url = rootpath+'/customer/getCustomer';
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+          if(xhr.readyState==4){
+            let res = JSON.parse(xhr.responseText);// console.log(res);
+            if(res.err==0){// console.log(res.data);
+              load(res.data);
+              total=res.data.total;
+              now.innerHTML=page;
+              sum.innerHTML=Math.ceil(total/pagesize);
+            }
+          }
+        }
+        xhr.open("post",url,true);
+        xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+        xhr.send("attr="+attr+"&sort="+sort+"&pagesize="+pagesize+"&page="+page);// xhr.send();
+      }
+      // 列表渲染
+      function load(data){
+        if(data.customerlist.length>0){
+        // if(data.length>0){
+          let td='';
+          for(var i=0;i<data.customerlist.length;i++){
+            let string=`<tr>
+                    <td><input name="" type="checkbox" value=""></td>
+                    <td data-id="${data['customerlist'][i]['_id']}">${i+1}</td>
+                    <td>${data['customerlist'][i]['name']}</td>
+                    <td>${data['customerlist'][i]['sex']}</td>
+                    <td>${data['customerlist'][i]['city']}</td>
+                    <td>${data['customerlist'][i]['nickname']}</td>
+                    <td>${data['customerlist'][i]['jobs']}</td>
+                    <td>${data['customerlist'][i]['grade']}</td>
+                    <td>${data['customerlist'][i]['date']}</td>
+                    <td>
+                      <a class="layui-btn layui-btn-xs" lay-event="edit" onclick="updateCustomer('${data['customerlist'][i]['_id']}')">编辑</a>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="del(this,'${data['customerlist'][i]['_id']}')">删除</a>
+                    </td></tr>`
+              td+=string;
+          }
+          tbody.innerHTML=td;
+          fenYe.setAttribute("display","block");
+        }else{
+          tbody.innerHTML='没有用户';
+          fenYe.setAttribute("display","none");
+        }
+      }
+      // 分页处理
+      function goPage(type){
+        let sum2 = sum.innerHTML;  
+        let page=1;//page表示目标页
+        switch (type) {
+          case 'first' : 
+            page=1;
+            break;
+          case 'last' : 
+            page=Math.ceil(total/pagesize);
+            break;
+          case 'jump' : 
+            page=jump.value;
+            break;
+          case 'prev':
+            if(nowpage > 1){
+              page=nowpage-1;
+            }else{
+              page=1;
+            }       
+            break;
+          case 'next':
+            if(nowpage < sum2){
+              page=nowpage+1;
+            }else{
+              page=sum2;
+            }       
+            break;
+        }
+        now.innerHTML=page;
+        getListData(attr,preventSort,page);
+        // getSouGoods(attr,sort,page);
+      }
+      // 用户编辑
+      function updateCustomer(id){
+        location.href = 'user-update.html';
+        let storage=window.localStorage;//获取storage对象
+        storage.setItem("userId",id);//添加缓存
+      }
+      // 添加用户
+      function addCustomer(){
+        location.href = 'user-add.html';
+      }
+      //全选
+      let all = document.querySelector('#all');    
+      all.onclick = function(){
+        let checks = tbody.querySelectorAll("input");
+        for(let i=0;i<checks.length;i++){
+          checks[i].checked = this.checked;
+        }
+      }
+      function checksAll(){
+        let checks = tbody.querySelectorAll("input");
+        for(let i=0;i<checks.length;i++){
+          if(!checks[i].checked){
+              all.checked = "";
+              break;
+          }else{
+              all.checked = "checked";
+          }                       
+        }                  
+      }
+      tbody.onclick = function(e){
+        let tagName = e.target.tagName.toLowerCase();
+        if(tagName == "input"){
+          checksAll();
+        }
+      }
+      //批量删除
+      function delMore(){
+        let checks = tbody.querySelectorAll("input");//console.log(checks);    
+        let idx="";
+        for(let i=0;i<checks.length;i++){
+          if(checks[i].checked){// console.log(checks[i]);
+            idx+=","+checks[i].parentElement.nextElementSibling.getAttribute("data-id");
+          }
+        }
+        idx=idx.slice(1);//console.log(idx);
+        del(this,idx);
+      }
+    </script>
+    <script>
+      //用户删除
+      function del(obj,id){
+        let url = rootpath+'/customer/delCustomer';
+        layui.use('table', function(){
+          var table = layui.table;
+          layer.confirm('确定要删除吗？', function(index){
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function(){
+              if(xhr.readyState==4){
+                let res = JSON.parse(xhr.responseText);// console.log(res);    
+                if(res.err==0){
+                  layer.msg('已删除!',{icon:1,time:1000});
+                  getListData(attr,preventSort,1);
+                }
+              }
+            }
+            xhr.open("post",url,true);
+            xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+            xhr.send("id="+id);
+            layer.close(index);
+          });
+        });
+      }
+    </script>  
+  </body>
+</html>

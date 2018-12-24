@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>后台管理系统</title>
+  <link rel="stylesheet" href="../layui/css/layui.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="layui-layout-body">
+  <div class="layadmin-tabspage-none">
+    <div class="layui-layout layui-layout-admin">
+      <!-- 头部区域 -->
+      <div class="layui-header">
+        <!-- <div class="layui-logo">layui 后台布局</div> -->
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <!-- <ul class="layui-nav layui-layout-left">
+          <li class="layui-nav-item"><a href="">控制台</a></li>
+          <li class="layui-nav-item"><a href="">商品管理</a></li>
+          <li class="layui-nav-item"><a href="">用户</a></li>
+          <li class="layui-nav-item">
+            <a href="javascript:;">其它系统</a>
+            <dl class="layui-nav-child">
+              <dd><a href="">邮件管理</a></dd>
+              <dd><a href="">消息管理</a></dd>
+              <dd><a href="">授权管理</a></dd>
+            </dl>
+          </li>
+        </ul> -->
+        <ul class="layui-nav layui-layout-right">
+          <li class="layui-nav-item">
+            <a href="javascript:;">
+              <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+              <span id="user">贤心</span>
+            </a>
+            <dl class="layui-nav-child">
+              <dd><a href="">基本资料</a></dd>
+              <dd><a href="">安全设置</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item"><a href="login.html">退出</a></li>
+        </ul>
+      </div>
+      <!-- 侧边菜单 -->
+      <div class="layui-side layui-side-menu layui-bg-black">
+        <div class="layui-side-scroll">
+          <div class="layui-logo" lay-href=""> <span>后台管理系统</span> </div>
+          <ul class="layui-nav layui-nav-tree " lay-filter="demo"><!-- site-demo-nav -->
+            <li class="layui-nav-item ">
+              <a class="javascript:;" href="javascript:;">商品管理<span class="layui-nav-more"></span></a>
+              <dl class="layui-nav-child">
+                <dd class="">
+                  <a lay-href="product-list.html">商品列表</a>
+                </dd>
+                <dd class="">
+                  <a lay-href="product-category.html">商品分类</a>
+                </dd>
+              </dl>
+            </li>
+            <li class="layui-nav-item">
+              <a class="javascript:;" href="javascript:;">用户管理<span class="layui-nav-more"></span></a>
+              <dl class="layui-nav-child">
+                <dd class="">
+                  <a lay-href="user-list.html">用户列表</a>
+                </dd>
+              </dl>
+            </li>
+            <li class="layui-nav-item">
+              <a class="javascript:;" href="javascript:;">订单管理<span class="layui-nav-more"></span></a>
+              <dl class="layui-nav-child">
+                <dd class="">
+                  <a lay-href="order-list.html">订单列表</a>
+                </dd>
+              </dl>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- 主体内容 -->
+      <div class="layui-body" id="LAY_app_body">
+        <div class="layadmin-tabsbody-item layui-show">
+          <iframe src="product-list.html" frameborder="0" class="layadmin-iframe"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="../layui/layui.js"></script>
+<script src="../layui/layui.all.js"></script>
+<script>
+  let user = document.querySelector("#user");
+  let iframe = document.querySelector("iframe");//console.log(iframe);
+  var storage1 = window.sessionStorage;
+  user.innerText = storage1.getItem('user');
+  let src = storage1.getItem('path');//console.log(src);
+  if(src!=null){
+    iframe.setAttribute("src",src);
+  }
+
+  layui.use(['element'], function(){
+    var element = layui.element;
+    
+    //一些事件监听
+    element.on('nav(demo)', function(data){
+      // console.log(data.attr('lay-href'));
+      let storage = window.sessionStorage;
+      if(data.attr('lay-href')!=undefined){
+        storage.setItem('path',data.attr('lay-href'));
+        lay('iframe').attr('src',storage.getItem('path'));
+      }
+    });
+  });
+
+</script> 
+</body>
+</html>

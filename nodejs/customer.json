@@ -1,0 +1,53 @@
+/* 1 */
+{
+    "_id" : ObjectId("5c1f6d211a6cea1ac831c974"),
+    "email" : "1234567899@qq.com",
+    "date" : "2018-12-23",
+    "name" : "老江",
+    "nickname" : "老江",
+    "password" : "123456",
+    "tel" : 12345678989.0,
+    "sex" : "男",
+    "birthday" : "1998-06-11",
+    "city" : "九江",
+    "jobs" : "学生",
+    "notes" : "老江最屌",
+    "grade" : 0,
+    "__v" : 0
+}
+
+/* 2 */
+{
+    "_id" : ObjectId("5c1f7ebf1a6cea1ac831c975"),
+    "email" : "123456789@qq.com",
+    "date" : "2018-12-23",
+    "name" : "小江",
+    "nickname" : "小江",
+    "password" : "123456",
+    "tel" : 12345674567.0,
+    "sex" : "男",
+    "birthday" : "1997-03-03",
+    "city" : "北京",
+    "jobs" : "作者",
+    "notes" : "666",
+    "grade" : 0,
+    "__v" : 0
+}
+
+/* 3 */
+{
+    "_id" : ObjectId("5c1f8d5aba38cc15d03b2094"),
+    "email" : "123123@qq.com",
+    "date" : "2018-12-23",
+    "name" : "小雪",
+    "nickname" : "雪妹子",
+    "password" : "123456",
+    "tel" : 12345674567.0,
+    "sex" : "女",
+    "birthday" : "1997-07-07",
+    "city" : "上海",
+    "jobs" : "记者",
+    "notes" : "这就是我",
+    "grade" : 0,
+    "__v" : 0
+}

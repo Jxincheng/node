@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>开始使用layui</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="../css/admin.css">
+  </head>
+  <body layadmin-themealias="default">
+    <div class="layui-card layadmin-header" style="display: block;">
+      <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
+        <a lay-href="">首页</a>
+        <span lay-separator="">/</span><a>商品管理</a>
+        <span lay-separator="">/</span><a><cite>分类编辑</cite></a>
+      </div>
+    </div>
+    <div class="layui-fluid">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+          <div class="layui-card">
+            <!-- <div class="layui-card-header">订单统计</div> -->
+            <div class="layui-card-body">
+              <form class="layui-form" action="product-category.html">
+                <div class="layui-form-item">
+                  <label class="layui-form-label">分类名称</label>
+                  <div class="layui-input-block">
+                    <input type="text" name="title" id="genre" lay-verify="title" autocomplete="off" placeholder="请输入分类名称" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                  <label class="layui-form-label">备注</label>
+                  <div class="layui-input-block">
+                    <textarea placeholder="请输入备注" id="notes" class="layui-textarea"></textarea>
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <div class="layui-inline">
+                    <label class="layui-form-label">日期</label>
+                    <div class="layui-input-inline">
+                      <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="demo1" id="submits">立即提交</button>
+                    <button class="layui-btn layui-btn-primary" onclick="cancel()">取消</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../layui/layui.js"></script>
+    <script src="../layui/layui.all.js"></script>
+    <script src="../js/date.js"></script>
+    <script>  
+      let genre = document.querySelector('#genre');
+      let notes = document.querySelector('#notes');
+      let date = document.querySelector('#date');
+
+      let storage=window.localStorage;//获取storage对象
+      let id = storage.getItem("categoryId");
+      let rootPath = 'http://localhost:5002';
+      let xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function(){
+        if(xhr.readyState==4){
+          let res = JSON.parse(xhr.responseText);// console.log(res);
+          if(res.err==0){
+            genre.value=res.data[0].genre;
+            notes.value=res.data[0].notes;
+            date.value=res.data[0].date;
+          }
+        }
+      }
+      xhr.open("post",rootPath+'/category/getOneCategory',true);
+      xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+      xhr.send("id="+id);
+      // 提交
+      let submits = document.querySelector('#submits');
+      submits.onclick = function(e){
+        e.preventDefault();
+        let url=rootPath+'/category/updateCategory';
+        let data="id="+id+"&genre="+genre.value+"&notes="+notes.value+"&date="+date.value;
+        let xhr1 = new XMLHttpRequest();
+        xhr1.onreadystatechange = function(){
+          if(xhr1.readyState==4){
+            let res = JSON.parse(xhr1.responseText);// console.log(res);
+            if(res.err==0){
+              location.href='product-category.html';
+            }else{
+              alert('提交失败请重试');
+            }
+          }
+        }
+        xhr1.open("post",url,true);
+        xhr1.setRequestHeader('content-type','application/x-www-form-urlencoded');
+        xhr1.send(data);
+      }
+      // 取消添加商品
+      function cancel(){
+        // console.log('取消');
+      }
+    </script> 
+  </body>
+</html>
