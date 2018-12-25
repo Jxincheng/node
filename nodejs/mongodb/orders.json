@@ -1,0 +1,4 @@
+{"_id":{"$oid":"5c1f96e67cbd490eb409b746"},"date":"2018-12-12","goodsname":"950克","price":"520","num":2,"freight":"10","goodstotal":"1040","ordertotal":"1050","__v":0}
+{"_id":{"$oid":"5c20be25e7bb76254c144ed0"},"date":"2018-12-12","goodsname":"980克","price":"516","num":4,"freight":"20","goodstotal":"2064","ordertotal":"2064","__v":0}
+{"_id":{"$oid":"5c20be5a126e101d884cccda"},"date":"2018-12-12","goodsname":"970克","price":"450","num":1,"freight":"15","goodstotal":"450","ordertotal":"465","__v":0}
+{"_id":{"$oid":"5c20be9d699b7a225c144e2b"},"date":"2018-12-15","goodsname":"950克","price":"520","num":3,"freight":"12","goodstotal":"1560","ordertotal":"1572","__v":0}
